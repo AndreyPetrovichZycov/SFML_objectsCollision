@@ -11,15 +11,15 @@ using namespace sf;
 const float PI = 3.1415;
 
 float dist(std::vector<float> c1, std::vector<float> c2) {
-	float d=0;
-	d = sqrt(pow(c1[0]-c2[0], 2) + pow(c1[1] - c2[1], 2));
+	float d = 0;
+	d = sqrt(pow(c1[0] - c2[0], 2) + pow(c1[1] - c2[1], 2));
 	return d;
 }
 
 bool intersect(CircleShape c1, CircleShape c2) {
-	std::vector<float> center1 = { c1.getPosition().x, c1.getPosition().y }, 
+	std::vector<float> center1 = { c1.getPosition().x, c1.getPosition().y },
 		center2 = { c2.getPosition().x, c2.getPosition().y };
-	
+
 	if (dist(center1, center2) < c1.getRadius() + c2.getRadius()) {
 		return 1;
 	}
@@ -35,7 +35,7 @@ class Bounce {
 	float x;
 	float y;
 	float angle = 0;
-	Vector dP = std::vector<float>{1.f, 1.f};
+	Vector dP = std::vector<float>{ 1.f, 1.f };
 public:
 	Bounce(float r, float start_x, float start_y) {
 		R = r;
@@ -56,7 +56,7 @@ public:
 		y += dP.Y();
 	}
 
-	void Collision() 
+	void Collision()
 	{
 		if (x + R + dP.X() >= 1350) {
 			dP = ((dP * MProj()) * 2 + dP * (-1)) * (-1);
@@ -111,9 +111,9 @@ public:
 
 int main() {
 	RenderWindow window(VideoMode(1400, 700), "Window");
-	
+
 	Bounce b1(50.f, 700, 300), b2(50.f, 1000, 44);
-	
+
 
 	Clock time;
 	float t = 0;
@@ -124,7 +124,7 @@ int main() {
 		t = (float)time.getElapsedTime().asMilliseconds();
 		//std::cout << t <<std::endl;
 		Event event;
-		
+
 		while (window.pollEvent(event)) {
 			if (event.type == Event::Closed) {
 				window.close();
