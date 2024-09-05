@@ -3,8 +3,7 @@
 #include <vector>
 #include "Vector.h";
 #include "Matrix.h";
-#include <stack>
-#include <random>
+
 
 using namespace sf;
 
@@ -35,7 +34,7 @@ class Bounce {
 	float x;
 	float y;
 	float angle = 0;
-	Vector dP = std::vector<float>{ 1.f, 1.f };
+	Vector dP = std::vector<float>{ 0.1f, 0.1f };
 public:
 	Bounce(float r, float start_x, float start_y) {
 		R = r;
@@ -45,15 +44,15 @@ public:
 		circle.setPosition(x, y);
 	}
 
-	void update() {
-		move();
+	void update(float t) {
+		move(t);
 		circle.setPosition(x, y);
 		Collision();
 	}
 
-	void move() {
-		x += dP.X();
-		y += dP.Y();
+	void move(float t) {
+		x += t*dP.X();
+		y += t*dP.Y();
 	}
 
 	void Collision()
@@ -106,9 +105,6 @@ public:
 
 
 
-
-
-
 int main() {
 	RenderWindow window(VideoMode(1400, 700), "Window");
 
@@ -116,13 +112,16 @@ int main() {
 
 
 	Clock time;
-	float t = 0;
+	float dt = 0;
 
 	//window.setFramerateLimit(60);
 
 	while (window.isOpen()) {
-		t = (float)time.getElapsedTime().asMilliseconds();
-		//std::cout << t <<std::endl;
+
+		dt = time.getElapsedTime().asMilliseconds();
+		dt = dt / 1000;
+
+		std::cout << dt <<std::endl;
 		Event event;
 
 		while (window.pollEvent(event)) {
@@ -131,8 +130,8 @@ int main() {
 			}
 		}
 
-		b1.update();
-		b2.update();
+		b1.update(dt);
+		b2.update(dt);
 		b1.BounceCollision(b2);
 		b2.BounceCollision(b1);
 		if (intersect(b1.getSprite(), b2.getSprite())) {
